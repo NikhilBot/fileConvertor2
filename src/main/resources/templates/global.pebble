@@ -1,0 +1,13 @@
+{% macro generateTag(name, value) %}
+	     <{{ name }}> {{ value }} </{{name}}>
+{% endmacro %}
+{% macro generateStartTag(name) %}
+	<{{ name }}>
+{% endmacro %}
+{% macro endTag(name) %}
+	</{{name}}>
+{% endmacro %}
+{% macro generateStartTagAttr(name, map) %}
+	<{{ name }}
+	{% for entry in map %} {{ entry.key }} = "{{ entry.value }}"{% endfor %}>
+{% endmacro %}
