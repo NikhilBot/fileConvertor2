@@ -1,6 +1,7 @@
 package com.manifesting.fileConvertor.Aggregator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.opendevl.JFlat;
 import com.github.underscore.lodash.U;
 import com.manifesting.fileConvertor.Parser.JsonTemplateParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class JsonToXml implements CommandLineRunner {
          String fileFormat;
         partFileSpec = jsonTemplateParser.parseJsonTemplate("partFileElement");
         batchFileSpec = jsonTemplateParser.parseJsonTemplate("batchFileElement");
+        fileFormat = jsonTemplateParser.getFileFormat();
 
         Map<?,?> partFileMap = tagAggregator.aggregatePartFile(partFileSpec);
         Map<?,?> batchFileMap = tagAggregator.aggregateBatchFile(batchFileSpec);
@@ -41,15 +43,23 @@ public class JsonToXml implements CommandLineRunner {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.writerWithDefaultPrettyPrinter().writeValue(out , manifestMap);
         String xml = U.jsonToXml(String.valueOf(out.toString()));
-        try{
-            FileWriter xmlFw=new FileWriter("C:\\Users\\Nikhil\\Desktop\\Renderer\\RendererOutputFiles\\XMLOutput.xml");
-            FileWriter jsonFw=new FileWriter("C:\\Users\\Nikhil\\Desktop\\Renderer\\RendererOutputFiles\\JSONOutput.json");
-            xmlFw.write(U.formatXml(xml));
-            jsonFw.write(out.toString());
-            jsonFw.close();
-            xmlFw.close();
-        }catch(Exception e){System.out.println(e);
+        if(fileFormat == "XML") {
+            try {
+                FileWriter xmlFw = new FileWriter("C:\\Users\\Nikhil\\Desktop\\Renderer\\RendererOutputFiles\\XMLOutput.xml");
+                FileWriter jsonFw = new FileWriter("C:\\Users\\Nikhil\\Desktop\\Renderer\\RendererOutputFiles\\JSONOutput.json");
+                xmlFw.write(U.formatXml(xml));
+                jsonFw.write(out.toString());
+                jsonFw.close();
+                xmlFw.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
+        else {
+            JFlat flatMe = new JFlat(out.toString());
+            flatMe.json2Sheet().write2csv("C:\\Users\\Nikhil\\Desktop\\Renderer\\RendererOutputFiles\\CSVOutput.json");
+        }
+
     }
 
     private void createMap(Map<?,?> map,Map<?,?> map2){
