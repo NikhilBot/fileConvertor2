@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +26,7 @@ public class JsonToXml implements CommandLineRunner {
     VelocityExample velocityExample;
 
     private final Map<String,Object> manifestMap = new HashMap<>();
-    public void selfRenderer () throws IOException {
+    public void selfRenderer () throws Exception {
 
          String partFileSpec;
          String batchFileSpec;
@@ -43,7 +42,10 @@ public class JsonToXml implements CommandLineRunner {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.writerWithDefaultPrettyPrinter().writeValue(out , manifestMap);
         String xml = U.jsonToXml(String.valueOf(out.toString()));
-        if(fileFormat == "XML") {
+        if(fileFormat.equals("XML")) {
+            JFlat flatMe = new JFlat(out.toString());
+            flatMe.json2Sheet().headerSeparator("|").write2csv("C:\\Users\\Nikhil\\Desktop\\Renderer\\RendererOutputFiles\\CSVOutput.manifest",'|');
+
             try {
                 FileWriter xmlFw = new FileWriter("C:\\Users\\Nikhil\\Desktop\\Renderer\\RendererOutputFiles\\XMLOutput.xml");
                 FileWriter jsonFw = new FileWriter("C:\\Users\\Nikhil\\Desktop\\Renderer\\RendererOutputFiles\\JSONOutput.json");
@@ -56,9 +58,7 @@ public class JsonToXml implements CommandLineRunner {
             }
         }
         else {
-            JFlat flatMe = new JFlat(out.toString());
-            flatMe.json2Sheet().write2csv("C:\\Users\\Nikhil\\Desktop\\Renderer\\RendererOutputFiles\\CSVOutput.json");
-        }
+             }
 
     }
 
