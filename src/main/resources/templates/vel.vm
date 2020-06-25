@@ -1,0 +1,31 @@
+#parse("global.vm")
+#foreach ($var in $MyVariable.getAllPFTrackingId())
+#generateStartTag("shipmentDetail")
+#generateStartTagAttr("consigneeAddress",{"AddressType" : $MyVariable.getCity($var)})
+#generateTag("City", $MyVariable.getCity($var))
+#generateTag("Name", $MyVariable.getName($var))
+#generateTag("Zip", $MyVariable.getZip($var))
+#generateTag("countryName", $MyVariable.getCountryName($var))
+#generateTag("countryCode", $MyVariable.getCountryCode($var))
+#generateTag("Contact", $MyVariable.getContact($var))
+#foreach($var2 in $MyVariable.getItemIds($var))
+#generateStartTag("ShipmentPackageItemDetail")
+#generateTag("itemTitle" , $MyVariable.getItemtitle($var , $var2))
+#generateStartTag("ItemQuantity")
+#generateTag("Quantity" , $MyVariable.getItemQuantity($var,$var2))
+#endTag("ItemQuantity")
+#endTag("ShipmentPackageItemDetail")
+#end
+#if($MyVariable.getCountryName($var) == $MyVariable.getCountryName($var))
+#generateTag("if" , $MyVariable.getCountryName($var))
+#else
+#generateTag("else",$MyVariable.getCountryName($var))
+#end
+#if($MyVariable.getCountryName($var) == $MyVariable.getCountryCode($var))
+#generateTag("if" , $MyVariable.getCountryCode($var))
+#else
+#generateTag("else",$MyVariable.getCountryCode($var))
+#end
+#endTag("consigneeAddress")
+#endTag("shipmentDetail")
+#end

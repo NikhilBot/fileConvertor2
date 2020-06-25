@@ -1,0 +1,12 @@
+#macro(generateStartTag $name)
+  <$name>
+#end
+#macro( generateStartTagAttr $name,$map)
+  <$name #foreach($mapEntry in $map.entrySet()) $mapEntry.getKey() = "$mapEntry.getValue()" #end>
+#end
+#macro( generateTag $name $value )
+      <$name> $value </$name>
+#end
+#macro( endTag $name )
+  </$name>
+#end
