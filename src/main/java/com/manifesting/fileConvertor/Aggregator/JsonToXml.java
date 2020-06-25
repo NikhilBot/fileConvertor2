@@ -20,6 +20,11 @@ public class JsonToXml implements CommandLineRunner {
     TagAggregator tagAggregator;
     @Autowired
     JsonTemplateParser jsonTemplateParser;
+    @Autowired
+    PebbleExample pebbleExample;
+    @Autowired
+    VelocityExample velocityExample;
+
     private final Map<String,Object> manifestMap = new HashMap<>();
     public void selfRenderer () throws IOException {
 
@@ -59,6 +64,8 @@ public class JsonToXml implements CommandLineRunner {
     public void run ( String... args ) throws Exception {
         long startTime = System.currentTimeMillis();
         selfRenderer();
+        velocityExample.velocityExample();
+        pebbleExample.pebbleTemplateExample();
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
         System.out.println(elapsedTime);
